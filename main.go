@@ -2,11 +2,21 @@ package main
 
 import (
 	"fmt"
+	"github.com/medfriend/shared-commons-go/util/consul"
+	"github.com/medfriend/shared-commons-go/util/env"
 	"github.com/pebbe/zmq4"
 )
 
 func main() {
 	// Crear un socket PULL
+
+	env.LoadEnv()
+
+	consulClient := consul.ConnectToConsulKey("CHATBOT")
+	serviceInfo, _ := consul.GetKeyValue(consulClient, "CHATBOT")
+
+	fmt.Println(serviceInfo)
+
 	socket, err := zmq4.NewSocket(zmq4.PULL)
 	if err != nil {
 		panic(err)
